@@ -1,0 +1,90 @@
+﻿@model IEnumerable<MyApplication03_Library_.Models.Book>
+
+@{
+    ViewBag.Title = "Index";
+    int pageNum = ViewBag.Page ?? 1;
+    int totalNum = ViewBag.TotalNum ?? 0;
+    int maxListCount = ViewBag.MaxListCount ?? 3;
+    int totalPageNum = Convert.ToInt32(Math.Ceiling((double)totalNum / maxListCount));
+}
+
+<h2>Index</h2>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<form style="width:400px;float:right">
+    <div class="input-group" style="margin-bottom: 10px">
+        <span class="input-group-addon">
+            <select name="searchOption">
+                <option value="title" @(ViewBag.SearchOption == "title" ? "selected" : "")>Title</option>
+                <option value="writer" @(ViewBag.SearchOption == "writer" ? "selected" : "")>Writer</option>
+                <option value="publisher" @(ViewBag.SearchOption == "publisher" ? "selected" : "")>Publisher</option>
+            </select>
+        </span>
+        <input class="form-control" type="text" name="keyword" value="@ViewBag.Keyword"/>
+        <span class="input-group-btn">
+            <button class="btn btn-info" type="submit">Search</button>
+        </span>
+    </div>
+</form>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.writer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.summary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.publisher)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.published_date)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.writer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.summary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.published_date)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.book_num }) |
+                @Html.ActionLink("Details", "Details", new { id = item.book_num }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.book_num })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<!-- for separating pages -->
+<div class="text-center">
+    <div class="btn-group">
+        @for (int i = 1; i <= totalPageNum; i++)
+        {
+            <a class="btn btn-@(pageNum == i ? "primary" : "default")" href="?page=@i">@i</a>
+        }
+    </div>
+</div>
